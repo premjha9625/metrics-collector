@@ -1,7 +1,10 @@
-from flask import Flask, request, jsonify
+import csv
+from flask import Flask, render_template, request, jsonify
 from subprocess import Popen, PIPE
 from subprocess import check_output
 from flask_cors import CORS
+import tablib
+import os
 
 app = Flask(__name__)
 #CORS(app)  # Enable CORS for all routes
@@ -36,18 +39,25 @@ def run_script():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+#api for csv reading
+
+dataset = tablib.Dataset()
+with open(os.path.join(os.path.dirname(__file__),'/home/prem/Desktop/metrics/dev/disk_usage.csv')) as f:
+    dataset.csv = f.read()
 @app.route('/csv', methods=['GET'])
 def display_csv():
-    csv_data = []
+    # csv_data = []
 
-    # Read the CSV file and store its content in csv_data list
-    with open('/home/PremJha/Desktop/python-script/disk_usage.csv', newline='') as csvfile:
-        reader = csv.reader(csvfile)
-        for row in reader:
-            csv_data.append(row)
+    # # Read the CSV file and store its content in csv_data list
+    # with open('/home/prem/Desktop/metrics/dev/disk_usage.csv', newline='') as csvfile:
+    #     reader = csv.reader(csvfile)
+    #     for row in reader:
+    #         csv_data.append(row)
 
-    # Render the template and pass the CSV data to it
-    return render_template('csv_template.html', csv_data=csv_data)
+    # # Render the template and pass the CSV data to it
+    # return render_template('/home/prem/Desktop/metrics/dev/csv_template.html', csv_data=csv_data)
+ 
+    return dataset.html  
 
 
 if __name__ == '__main__':
