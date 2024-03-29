@@ -21,12 +21,34 @@ def run_script():
 
         # Execute shell script with parameters
         #result = subprocess.run(['/home/PremJha/Desktop/python-script/shell.sh', ip_address, user])
-        stdout = check_output(['/home/PremJha/Desktop/python-script/shell.sh',ip_address, user, password ]).decode('utf-8')
+        if (password == ''):
+            stdout = check_output(['/home/PremJha/Desktop/python-script/shellwopass.sh',ip_address, user]).decode('utf-8')
 
-        # Return output of the shell script as the API response
-        return stdout
+            # Return output of the shell script as the API response
+            return stdout
+        else:
+            stdout = check_output(['/home/PremJha/Desktop/python-script/shell.sh',ip_address, user, password ]).decode('utf-8')
+
+            # Return output of the shell script as the API response
+            return stdout
+            
+
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+@app.route('/csv', methods=['GET'])
+def display_csv():
+    csv_data = []
+
+    # Read the CSV file and store its content in csv_data list
+    with open('/home/PremJha/Desktop/python-script/disk_usage.csv', newline='') as csvfile:
+        reader = csv.reader(csvfile)
+        for row in reader:
+            csv_data.append(row)
+
+    # Render the template and pass the CSV data to it
+    return render_template('csv_template.html', csv_data=csv_data)
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

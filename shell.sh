@@ -1,9 +1,5 @@
 #!/bin/bash
 
-
-
-#ssh root@172.16.1.140
-
 ip_address="$1"
 user="$2"
 password="$3"
@@ -24,5 +20,6 @@ echo "========================================================================"
 
 
 # disk Usage
-disk_usage=$(sshpass -p $password  ssh $user@$ip_address 'df -Th | column -t')
-echo "Disk Usage: $disk_usage"
+#disk_usage=$(sshpass -p $password  ssh $user@$ip_address 'df -Th | column -t')
+disk_usage=$(sshpass -p $password ssh $user@$ip_address 'df -Th | awk '\''BEGIN {print "Filesystem,Type,Size,Used,Available,Use%,Mounted on"} NR > 1 {print $1 "," $2 "," $3 "," $4 "," $5 "," $6 "," $7}'\'' > disk_usage.csv')
+#echo "Disk Usage: $disk_usage"
