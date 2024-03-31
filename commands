@@ -1,8 +1,0 @@
-top -b -n 1 | grep -i "cpu(s)" | awk '{print "CPU min:", $8, "%"}; {print "CPU avg:", $2, "%"}; {print "CPU max:", $4, "%"}'
-
-df -Th | grep <filesystem> | awk '{print $6}'
-
-free | grep Mem | awk '{print $3/$2 * 100.0"%"}'
-
-
-
