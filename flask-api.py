@@ -1,14 +1,17 @@
+from ast import Index
 import csv
 from flask import Flask, render_template, request, jsonify
 from subprocess import Popen, PIPE
 from subprocess import check_output
 from flask_cors import CORS
-import tablib
-import os
+# import tablib
+# import os
+import pandas as pd
 
 app = Flask(__name__)
-#CORS(app)  # Enable CORS for all routes
-CORS(app, resources={r"/run_script": {"origins": "*"}})
+CORS(app)  # Enable CORS for all routes
+# CORS(app, resources={r"/run_script": {"origins": "*"}})
+# CORS(app, resources={r"csv": {"origins": "*"}})
 
 @app.route('/run_script', methods=['POST'])
 def run_script():
@@ -41,13 +44,17 @@ def run_script():
 
 #api for csv reading
 
-dataset = tablib.Dataset()
-with open(os.path.join(os.path.dirname(__file__),'/home/prem/Desktop/metrics/dev/disk_usage.csv')) as f:
-    dataset.csv = f.read()
+#1st method to read
+
+# dataset = tablib.Dataset()
+# with open(os.path.join(os.path.dirname(__file__),'/home/prem/Desktop/metrics/dev/disk_usage.csv')) as f:
+#     dataset.csv = f.read()
 @app.route('/csv', methods=['GET'])
 def display_csv():
+    
+    #2nd method to read and return as html template
+    
     # csv_data = []
-
     # # Read the CSV file and store its content in csv_data list
     # with open('/home/prem/Desktop/metrics/dev/disk_usage.csv', newline='') as csvfile:
     #     reader = csv.reader(csvfile)
@@ -56,8 +63,18 @@ def display_csv():
 
     # # Render the template and pass the CSV data to it
     # return render_template('/home/prem/Desktop/metrics/dev/csv_template.html', csv_data=csv_data)
- 
-    return dataset.html  
+    
+    #3rd method to read and return as json
+    # read_csv = pd.read_csv('/home/prem/Desktop/metrics/dev/disk_usage.csv',delimiter= ',') # or delimiter = ';'
+    # read_csv.head() # display your data and check it
+    # csv_to_json = read_csv.to_json(orient = 'columns')
+    # return jsonify(csv_to_json) 
+
+    #4th method to read and return as json
+    cols = ['Filesystem','Type','Size','Used','Available','Use%','Mounted on']
+    read_csv = pd.read_csv('/home/prem/Desktop/metrics/dev/disk_usage.csv', delimiter=',')
+    csv_dict = read_csv.to_dict(orient='records')
+    return jsonify(csv_dict)
 
 
 if __name__ == '__main__':
