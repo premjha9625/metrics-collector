@@ -117,8 +117,8 @@ function callAPI() {
     });
 }
 
-function getCV() {
-    fetch('http://127.0.0.1:5000/csv', {
+function getDisk() {
+    fetch('http://127.0.0.1:5000/getDisk', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json; charset=UTF-8',
