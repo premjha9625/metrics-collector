@@ -6,3 +6,32 @@ td {
         border: 1px solid black;
         border-collapse: collapse;
 }
+
+ /* Style to display input fields side by side */
+
+ html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    background: linear-gradient(to bottom, #a0d2eb 10%, #8458B3 50%,  #e5eaf5 100%);
+    display: flex;
+    justify-content: space-between; /* Horizontally distribute items with space between */
+    align-items: center; /* Align items vertically in the center */
+    height: 100vh; /* Set height of container to 100% of viewport height */
+    padding: 20px; /* Optional: Add padding around the container */
+  }
+
+  /* .content {
+    text-align: center;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+  } */
+
+.logo{
+    padding-right: 10%;
+    padding-bottom: 43%;
+}
