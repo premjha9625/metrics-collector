@@ -49,7 +49,7 @@ def run_script():
 # dataset = tablib.Dataset()
 # with open(os.path.join(os.path.dirname(__file__),'/home/prem/Desktop/metrics/dev/disk_usage.csv')) as f:
 #     dataset.csv = f.read()
-@app.route('/csv', methods=['GET'])
+@app.route('/getDisk', methods=['GET'])
 def display_csv():
     
     #2nd method to read and return as html template
@@ -72,7 +72,22 @@ def display_csv():
 
     #4th method to read and return as json
     cols = ['Filesystem','Type','Size','Used','Available','Use%','Mounted on']
-    read_csv = pd.read_csv('/home/prem/Desktop/metrics/dev/disk_usage.csv', delimiter=',')
+    read_csv = pd.read_csv('/home/PremJha/Desktop/python-script/disk_usage.csv', delimiter=',')
+    csv_dict = read_csv.to_dict(orient='records')
+    return jsonify(csv_dict)
+
+
+@app.route('/getMemory', methods=['GET'])
+def display_memory():
+    cols = ["total","used","free","available","used%"]
+    read_csv = pd.read_csv('/home/PremJha/Desktop/python-script/ram_usage.csv', delimiter=',')
+    csv_dict = read_csv.to_dict(orient='records')
+    return jsonify(csv_dict)
+
+@app.route('/getCPU', methods=['GET'])
+def display_cpu():
+    cols = ["total","used","free","available","used%"]
+    read_csv = pd.read_csv('/home/PremJha/Desktop/python-script/ram_usage.csv', delimiter=',')
     csv_dict = read_csv.to_dict(orient='records')
     return jsonify(csv_dict)
 
